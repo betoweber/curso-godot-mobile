@@ -1,0 +1,29 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/moeda.gd" id="1_moeda"]
+
+[sub_resource type="SphereShape3D" id="Esfera"]
+radius = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_ouro"]
+albedo_color = Color(1, 0.8, 0.2, 1)
+metallic = 0.8
+roughness = 0.3
+emission_enabled = true
+emission = Color(0.4, 0.3, 0, 1)
+
+[sub_resource type="CylinderMesh" id="Disco"]
+material = SubResource("Mat_ouro")
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.08
+
+[node name="Moeda" type="Area3D"]
+script = ExtResource("1_moeda")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("Esfera")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+rotation = Vector3(1.5708, 0, 0)
+mesh = SubResource("Disco")

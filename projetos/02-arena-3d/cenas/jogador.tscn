@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/jogador_3d.gd" id="1_jog"]
+
+[sub_resource type="CapsuleShape3D" id="Capsula_col"]
+radius = 0.4
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_corpo"]
+albedo_color = Color(1, 0.55, 0.25, 1)
+
+[sub_resource type="CapsuleMesh" id="Capsula_mesh"]
+material = SubResource("Mat_corpo")
+radius = 0.4
+height = 1.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_nariz"]
+albedo_color = Color(0.2, 0.2, 0.25, 1)
+
+[sub_resource type="BoxMesh" id="Caixa_nariz"]
+material = SubResource("Mat_nariz")
+size = Vector3(0.5, 0.15, 0.25)
+
+[node name="Jogador" type="CharacterBody3D"]
+script = ExtResource("1_jog")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.8, 0)
+shape = SubResource("Capsula_col")
+
+[node name="Modelo" type="Node3D" parent="."]
+
+[node name="Corpo" type="MeshInstance3D" parent="Modelo"]
+position = Vector3(0, 0.8, 0)
+mesh = SubResource("Capsula_mesh")
+
+[node name="Oculos" type="MeshInstance3D" parent="Modelo"]
+position = Vector3(0, 1.25, 0.33)
+mesh = SubResource("Caixa_nariz")

@@ -1,0 +1,112 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Topo" type="MarginContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 120.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 32
+
+[node name="Linha" type="HBoxContainer" parent="Topo"]
+layout_mode = 2
+
+[node name="Pontos" type="Label" parent="Topo/Linha"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 48
+text = "★ 0"
+
+[node name="Vidas" type="Label" parent="Topo/Linha"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.42, 0.42, 1)
+theme_override_font_sizes/font_size = 48
+text = "♥♥♥"
+
+[node name="TelaInicio" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Coluna" type="VBoxContainer" parent="TelaInicio"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Titulo" type="Label" parent="TelaInicio/Coluna"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.82, 0.4, 1)
+theme_override_font_sizes/font_size = 72
+text = "Chuva de
+Estrelas"
+horizontal_alignment = 1
+
+[node name="Recorde" type="Label" parent="TelaInicio/Coluna"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Recorde: 0"
+horizontal_alignment = 1
+
+[node name="Jogar" type="Button" parent="TelaInicio/Coluna"]
+custom_minimum_size = Vector2(360, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 48
+text = "Jogar"
+
+[node name="TelaFim" type="CenterContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Painel" type="PanelContainer" parent="TelaFim"]
+layout_mode = 2
+
+[node name="Margem" type="MarginContainer" parent="TelaFim/Painel"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 48
+
+[node name="Coluna" type="VBoxContainer" parent="TelaFim/Painel/Margem"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Titulo" type="Label" parent="TelaFim/Painel/Margem/Coluna"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "Fim de jogo"
+horizontal_alignment = 1
+
+[node name="Resultado" type="Label" parent="TelaFim/Painel/Margem/Coluna"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Você fez 0 pontos"
+horizontal_alignment = 1
+
+[node name="JogarDeNovo" type="Button" parent="TelaFim/Painel/Margem/Coluna"]
+custom_minimum_size = Vector2(360, 110)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 44
+text = "Jogar de novo"
+
+[connection signal="pressed" from="TelaInicio/Coluna/Jogar" to="." method="_on_jogar_pressed"]
+[connection signal="pressed" from="TelaFim/Painel/Margem/Coluna/JogarDeNovo" to="." method="_on_jogar_pressed"]

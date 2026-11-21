@@ -1,0 +1,113 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/main_3d.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://cenas/jogador.tscn" id="2_jog"]
+[ext_resource type="Script" path="res://scripts/camera_seguidora.gd" id="3_cam"]
+[ext_resource type="Script" path="res://scripts/joystick_virtual.gd" id="4_joy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="Ceu_mat"]
+sky_top_color = Color(0.3, 0.5, 0.85, 1)
+sky_horizon_color = Color(0.7, 0.8, 0.9, 1)
+ground_horizon_color = Color(0.7, 0.8, 0.9, 1)
+ground_bottom_color = Color(0.3, 0.45, 0.65, 1)
+
+[sub_resource type="Sky" id="Ceu"]
+sky_material = SubResource("Ceu_mat")
+
+[sub_resource type="Environment" id="Ambiente"]
+background_mode = 2
+sky = SubResource("Ceu")
+ambient_light_source = 3
+tonemap_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="Mat_chao"]
+albedo_color = Color(0.35, 0.65, 0.4, 1)
+
+[sub_resource type="CylinderMesh" id="Chao_mesh"]
+material = SubResource("Mat_chao")
+top_radius = 11.0
+bottom_radius = 11.0
+height = 1.0
+radial_segments = 48
+
+[sub_resource type="CylinderShape3D" id="Chao_col"]
+height = 1.0
+radius = 11.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_caixa"]
+albedo_color = Color(0.6, 0.42, 0.28, 1)
+
+[sub_resource type="BoxMesh" id="Caixa_mesh"]
+material = SubResource("Mat_caixa")
+size = Vector3(1.5, 1.5, 1.5)
+
+[sub_resource type="BoxShape3D" id="Caixa_col"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Ambiente")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.9, 0.6, 0)
+shadow_enabled = true
+
+[node name="Chao" type="StaticBody3D" parent="."]
+position = Vector3(0, -0.5, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Chao"]
+mesh = SubResource("Chao_mesh")
+
+[node name="Colisao" type="CollisionShape3D" parent="Chao"]
+shape = SubResource("Chao_col")
+
+[node name="Caixa1" type="StaticBody3D" parent="."]
+position = Vector3(3, 0.75, -2)
+
+[node name="Mesh" type="MeshInstance3D" parent="Caixa1"]
+mesh = SubResource("Caixa_mesh")
+
+[node name="Colisao" type="CollisionShape3D" parent="Caixa1"]
+shape = SubResource("Caixa_col")
+
+[node name="Caixa2" type="StaticBody3D" parent="."]
+position = Vector3(-4, 0.75, 3)
+rotation = Vector3(0, 0.6, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Caixa2"]
+mesh = SubResource("Caixa_mesh")
+
+[node name="Colisao" type="CollisionShape3D" parent="Caixa2"]
+shape = SubResource("Caixa_col")
+
+[node name="Jogador" parent="." instance=ExtResource("2_jog")]
+position = Vector3(0, 0.5, 0)
+
+[node name="Moedas" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("alvo")]
+position = Vector3(0, 9, 8)
+script = ExtResource("3_cam")
+alvo = NodePath("../Jogador")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Joystick" type="Control" parent="UI"]
+anchors_preset = 9
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_vertical = 2
+script = ExtResource("4_joy")
+
+[node name="Pontos" type="Label" parent="UI"]
+unique_name_in_owner = true
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 600.0
+offset_bottom = 90.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "Moedas: 0 / 12"

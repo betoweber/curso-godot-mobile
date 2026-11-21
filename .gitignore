@@ -1,0 +1,14 @@
+# Godot 4: pasta de cache gerada automaticamente (não versionar)
+.godot/
+*.translation
+export_presets.cfg.bak
+# Builds exportados
+builds/
+*.apk
+*.aab
+*.ipa
+# Blender: backups automáticos
+*.blend1
+*.blend2
+# macOS
+.DS_Store
