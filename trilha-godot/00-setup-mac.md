@@ -57,6 +57,30 @@ gh auth login                   # login no GitHub
 gh repo clone betoweber/curso-godot-mobile ~/Developer/curso-godot-mobile
 ```
 
+Logo depois de clonar, **ative a revisão automática antes de cada commit** (uma vez por computador):
+
+```bash
+cd ~/Developer/curso-godot-mobile
+./ferramentas/configurar.sh
+```
+
+A partir daí, todo `git commit` roda o hook `.githooks/pre-commit`, que:
+1. **bloqueia** o que não deve ir pro GitHub (pasta `.godot/`, keystores, builds `.apk`/`.aab`, arquivos enormes);
+2. verifica **erros de script e cenas quebradas** com o próprio Godot (se ele estiver em `/Applications`);
+3. mostra o **placar dos exercícios** quando você mexe neles;
+4. pede ao **Claude Code uma revisão do seu código** como um professor faria — com bugs 🔴, sugestões 🟡 e
+   elogios 🟢. Só bloqueia o commit por problemas sérios; nos exercícios ele dá dicas, nunca a resposta.
+
+Variações úteis:
+
+```bash
+CURSO_SEM_CLAUDE=1 git commit -m "..."     # pula só a revisão do Claude (ex: sem internet)
+git config curso.revisaoClaude false        # desliga a revisão do Claude de vez
+git commit --no-verify -m "..."             # pula tudo (evite)
+```
+
+Prefere revisar antes, com calma? Dentro do Claude Code digite **`/revisar`**.
+
 Fluxo de estudo sugerido:
 
 ```bash
@@ -90,5 +114,6 @@ Abra o terminal na pasta do repositório e rode `claude`. Exemplos de perguntas:
 - [ ] Importei `projetos/00-exercicios-gdscript` e rodei com **Cmd+B** (aparece a lista de testes)
 - [ ] Blender instalado e abre
 - [ ] Repositório clonado no Mac, consigo fazer `git push`
+- [ ] Rodei `./ferramentas/configurar.sh` e fiz um commit de teste (vi a revisão aparecer)
 
 ➡️ Próxima: [01 · O editor, nós e cenas](01-editor-nos-e-cenas.md)

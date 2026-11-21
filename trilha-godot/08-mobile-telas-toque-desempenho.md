@@ -118,6 +118,9 @@ e **Debug → Deploy with Remote Debug** para ver tudo isso **com o jogo rodando
 4. **Desafio**: controle a nave por **inclinação** (`Input.get_accelerometer().x`) como opção nas configurações.
    Só dá para testar no aparelho.
 
+🧪 **Exercício automático ex13 (gestos)**: reconhecer toque, segurar, swipes nas 4 direções e calcular zoom de pinça.
+Depois ligue ao jogo: guarde posição/tempo no `InputEventScreenTouch` pressionado e classifique ao soltar.
+
 ## ✅ Eu sei...
 
 - [ ] explicar stretch mode e aspect, e escolher para 2D/pixel art/3D

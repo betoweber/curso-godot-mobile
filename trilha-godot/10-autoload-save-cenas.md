@@ -103,6 +103,9 @@ Registre `transicao.tscn` (a **cena**, não só o script) como autoload e use `T
 3. Tela de **Opções** com dois `HSlider` (música e efeitos) salvos no `ConfigFile` e aplicados nos audio buses.
 4. **Desafio**: loja simples — estrelas acumuladas compram skins da nave (cores ou sprites), salvas no save.
 
+🧪 **Exercício automático ex14 (save robusto)**: JSON com versão, arquivo corrompido e saves antigos — os três
+problemas reais de todo save de jogo.
+
 ## ✅ Eu sei...
 
 - [ ] criar e usar um autoload

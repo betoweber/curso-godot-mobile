@@ -106,7 +106,7 @@ Leia o código inteiro — ele usa `_gui_input`, `index` do dedo, `limit_length`
    ou um `Button` que chama `Input.action_press("pular")` / `action_release`).
 3. Faça a câmera girar 45° em Y (visão isométrica) e corrija o movimento para ser relativo à câmera.
 4. Adicione **inimigos** simples: `CharacterBody3D` vermelhos que andam em direção ao jogador
-   (`direction_to`) — encostou, perde uma vida.
+   (`direction_to`) — encostou, perde uma vida. Use a máquina de estados do **ex11** para o comportamento.
 5. **Desafio**: um `Timer` de 60 s; pegue o máximo de moedas antes de acabar. Salve o recorde (lição 10).
 
 ## ✅ Eu sei...
@@ -116,5 +116,7 @@ Leia o código inteiro — ele usa `_gui_input`, `index` do dedo, `limit_length`
 - [ ] mover um `CharacterBody3D` com `move_and_slide()`
 - [ ] explicar como o joystick virtual se integra ao Input Map
 - [ ] criar materiais básicos
+
+🎨 Quer o visual de desenho animado (toon + contorno) que já está no personagem? Veja a [lição 14 · Shaders](14-shaders.md).
 
 ➡️ Agora é uma boa hora para a [trilha Blender](../trilha-blender/README.md) — e depois: [13 · Projeto final](13-projeto-final.md)

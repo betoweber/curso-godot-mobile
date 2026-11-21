@@ -48,6 +48,11 @@ papelão e deitar no chão. U e V são os eixos da imagem (como X e Y).
 O glTF leva a textura junto, mas o filtro *Closest* nem sempre vem. No Godot, no material do mesh importado:
 **Sampling → Filter → Nearest**. Ou, na importação, extraia os materiais e ajuste uma vez (detalhes na B04).
 
+## Visual toon no Godot
+
+Para o estilo "desenho animado" (luz em faixas + contorno), use o shader toon da
+[lição 14](../trilha-godot/14-shaders.md) — ele aceita a sua textura pixel art e já usa filtro Nearest.
+
 ## 🏋️ Exercícios
 
 1. Caixote com textura 32×32 desenhada no Aseprite (tábuas, pregos).

@@ -111,6 +111,11 @@ Objetivos:
 Faça **ex07** (classes), **ex08** (sinais) e **ex09** (enum/match). O ex09 tem a lógica real de escolher
 animação de um personagem de plataforma — você vai reusar isso.
 
+### Nível 2 (opcional, mas recomendado)
+
+- **ex10** — lambdas, `sort_custom` e closures (ranking de jogadores)
+- **ex11** — máquina de estados de um inimigo (padrão que você vai usar na lição 12)
+
 ## 📖 Leia o código de referência
 
 Abra `projetos/01-chuva-de-estrelas/scripts/jogador.gd` e responda (pode conferir com o tutor):

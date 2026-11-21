@@ -27,6 +27,19 @@ numa pós-graduação, e também quer aprender Blender para criar assets. Estuda
 - Exercícios com corretor: `projetos/00-exercicios-gdscript` — `exercicios/` (da pessoa), `solucoes/` (gabarito),
   `verificador.gd` (testes). Não altere `solucoes/` nem `verificador.gd` a menos que seja pedido.
 - Trabalho da pessoa: `meus-projetos/`. Progresso: `PROGRESSO.md`.
+- Lições bônus: `14-shaders.md` (shaders em `projetos/02-arena-3d/shaders/` e `projetos/01-chuva-de-estrelas/shaders/`)
+  e `15-publicar-nas-lojas.md`. Exercícios têm 2 níveis: ex01–ex09 e ex10–ex15.
+
+## Revisão antes do commit
+
+- O repositório tem um hook (`.githooks/pre-commit`, ativado por `./ferramentas/configurar.sh`) que bloqueia arquivos
+  indevidos, roda `ferramentas/checar_godot.gd` nos projetos alterados e pede uma revisão ao Claude seguindo
+  `ferramentas/instrucoes-revisao.md`. A última revisão fica em `.git/ultima-revisao.md` — se a pessoa pedir para
+  "explicar a revisão", leia esse arquivo e explique com calma, com exemplos.
+- Quando pedirem "revisa antes de eu commitar", "posso commitar?" ou `/revisar`, use a skill `revisar`
+  (`.claude/skills/revisar/SKILL.md`).
+- Se `git config core.hooksPath` estiver vazio, sugira rodar `./ferramentas/configurar.sh`.
+- Nunca sugira `--no-verify` como primeira opção; ajude a corrigir o problema.
 
 ## Coisas úteis que você pode fazer
 

@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+# =============================================================================
+# Revisão pré-commit do Curso Godot Mobile
+#
+# Ativar (uma vez por clone):   ./ferramentas/configurar.sh
+#
+# O que faz, nos arquivos que você está commitando:
+#   1. Bloqueia o que não deve ir pro git (.godot/, keystores, builds, arquivos enormes)
+#   2. Avisa se faltou adicionar o .uid de um script
+#   3. Se o Godot estiver instalado: verifica erros em scripts, cenas e recursos
+#   4. Se mexeu nos exercícios: roda o corretor e mostra o placar
+#   5. Se o Claude Code estiver instalado: pede uma revisão do código (como um professor)
+#
+# Pular só a revisão do Claude:  CURSO_SEM_CLAUDE=1 git commit ...
+# Desligar a revisão do Claude:  git config curso.revisaoClaude false
+# Pular tudo (não recomendado):   git commit --no-verify
+# =============================================================================
+set -u
+
+RAIZ="$(git rev-parse --show-toplevel)"
+cd "$RAIZ" || exit 0
+
+if [ -t 1 ]; then
+	VERM=$'\033[31m'; AMAR=$'\033[33m'; VERD=$'\033[32m'; AZUL=$'\033[36m'; NEG=$'\033[1m'; FIM=$'\033[0m'
+else
+	VERM=""; AMAR=""; VERD=""; AZUL=""; NEG=""; FIM=""
+fi
+
+ERROS=0
+erro()  { echo "  ${VERM}✘ $*${FIM}"; ERROS=$((ERROS + 1)); }
+aviso() { echo "  ${AMAR}⚠ $*${FIM}"; }
+ok()    { echo "  ${VERD}✔ $*${FIM}"; }
+titulo(){ echo; echo "${NEG}${AZUL}$*${FIM}"; }
+
+ARQUIVOS="$(git diff --cached --name-only --diff-filter=ACMR)"
+[ -z "$ARQUIVOS" ] && exit 0
+
+echo "${NEG}🔎 Revisão pré-commit do curso${FIM}"
+
+# -----------------------------------------------------------------------------
+titulo "1. Arquivos que não devem ir para o git"
+problemas_antes=$ERROS
+while IFS= read -r f; do
+	case "$f" in
+		.godot/*|*/.godot/*)          erro "$f — cache do Godot (.godot/) é gerado automaticamente" ;;
+		*.keystore|*.jks|*.p12|*.p8|*.mobileprovision|*.cer)
+		                              erro "$f — chave/certificado de assinatura! Guarde fora do repositório (gerenciador de senhas/backup)" ;;
+		*export_credentials.cfg)      erro "$f — contém senhas de export" ;;
+		*.apk|*.aab|*.ipa)            erro "$f — build exportado; distribua por fora (itch.io, GitHub Releases, loja)" ;;
+		*.blend1|*.blend2)            erro "$f — backup automático do Blender" ;;
+		*.DS_Store)                   erro "$f — arquivo de sistema do macOS" ;;
+	esac
+	tamanho="$(git cat-file -s ":$f" 2>/dev/null || echo 0)"
+	if [ "$tamanho" -gt 50000000 ]; then
+		erro "$f — $((tamanho / 1000000)) MB (o GitHub recusa > 100 MB; acima de 50 MB use Git LFS ou deixe fora do repo)"
+	elif [ "$tamanho" -gt 10000000 ]; then
+		aviso "$f — $((tamanho / 1000000)) MB. Arquivos grandes deixam o repositório lento. É necessário?"
+	fi
+	if [ "$(basename "$f")" = "export_presets.cfg" ] && git show ":$f" | grep -Eq 'password="[^"]+'; then
+		erro "$f — contém senha preenchida. Apague a senha do arquivo (o Godot guarda senhas em .godot/export_credentials.cfg)"
+	fi
+done <<< "$ARQUIVOS"
+[ $ERROS -eq $problemas_antes ] && ok "nada suspeito"
+
+# -----------------------------------------------------------------------------
+titulo "2. Arquivos .uid"
+faltando=0
+while IFS= read -r f; do
+	case "$f" in
+		*.gd|*.gdshader|*.gdshaderinc)
+			if [ -f "$f.uid" ] && ! git diff --cached --name-only | grep -qxF "$f.uid" \
+				&& ! git ls-files --error-unmatch "$f.uid" >/dev/null 2>&1; then
+				aviso "$f.uid existe mas não foi adicionado → git add \"$f.uid\""
+				faltando=1
+			fi ;;
+	esac
+done <<< "$ARQUIVOS"
+[ $faltando -eq 0 ] && ok "ok"
+
+# -----------------------------------------------------------------------------
+titulo "3. Verificação do Godot (scripts, cenas, recursos)"
+achar_godot() {
+	if [ -n "${GODOT:-}" ] && [ -x "${GODOT}" ]; then echo "$GODOT"; return; fi
+	for c in godot godot4; do
+		if command -v "$c" >/dev/null 2>&1; then command -v "$c"; return; fi
+	done
+	for c in "/Applications/Godot.app/Contents/MacOS/Godot" "$HOME/Applications/Godot.app/Contents/MacOS/Godot"; do
+		if [ -x "$c" ]; then echo "$c"; return; fi
+	done
+}
+GODOT_BIN="$(achar_godot)"
+
+# Monta pares "pasta_do_projeto<TAB>res://caminho" para cada arquivo verificável
+PARES=""
+while IFS= read -r f; do
+	case "$f" in *.gd|*.tscn|*.tres|*project.godot) ;; *) continue ;; esac
+	[ -f "$f" ] || continue
+	d="$(dirname "$f")"
+	while [ "$d" != "." ] && [ ! -f "$d/project.godot" ]; do d="$(dirname "$d")"; done
+	[ -f "$d/project.godot" ] || continue
+	PARES="${PARES}${d}	res://${f#"$d"/}
+"
+done <<< "$ARQUIVOS"
+
+if [ -z "$PARES" ]; then
+	ok "nenhum script/cena alterado"
+elif [ -z "$GODOT_BIN" ]; then
+	aviso "Godot não encontrado — pulei esta etapa. (Instale em /Applications ou defina GODOT=/caminho/do/Godot)"
+else
+	PROJETOS="$(printf '%s' "$PARES" | cut -f1 | sort -u)"
+	while IFS= read -r proj; do
+		[ -z "$proj" ] && continue
+		echo "  📁 $proj"
+		if [ ! -d "$proj/.godot" ]; then
+			echo "     (primeira vez neste projeto: importando, pode demorar um pouco...)"
+			"$GODOT_BIN" --headless --path "$proj" --import >/dev/null 2>&1
+		fi
+		lista="$(printf '%s' "$PARES" | awk -F '\t' -v p="$proj" '$1 == p { print $2 }')"
+		# shellcheck disable=SC2086
+		saida="$("$GODOT_BIN" --headless --path "$proj" --script "$RAIZ/ferramentas/checar_godot.gd" -- $lista 2>&1)"
+		status=$?
+		printf '%s\n' "$saida" | grep -E "✔|✘|SCRIPT ERROR|at: GDScript::reload" | sed 's/^/     /'
+		if [ $status -ne 0 ]; then
+			erro "há erros no projeto $proj (veja acima: arquivo e linha)"
+		fi
+	done <<< "$PROJETOS"
+fi
+
+# -----------------------------------------------------------------------------
+if printf '%s\n' "$ARQUIVOS" | grep -q '^projetos/00-exercicios-gdscript/exercicios/'; then
+	titulo "4. Exercícios de GDScript"
+	if [ -n "$GODOT_BIN" ]; then
+		EX=projetos/00-exercicios-gdscript
+		[ -d "$EX/.godot" ] || "$GODOT_BIN" --headless --path "$EX" --import >/dev/null 2>&1
+		"$GODOT_BIN" --headless --path "$EX" --script res://cli.gd 2>/dev/null | grep -E "testes passaram" | sed 's/^/  📊 /'
+		echo "  (informativo — exercícios incompletos não bloqueiam o commit)"
+	else
+		aviso "Godot não encontrado — não rodei o corretor"
+	fi
+fi
+
+# -----------------------------------------------------------------------------
+titulo "5. Revisão do Claude"
+CODIGO="$(printf '%s\n' "$ARQUIVOS" | grep -E '\.(gd|tscn|tres|gdshader|gdshaderinc|cfg)$|project\.godot$' || true)"
+if [ "${CURSO_SEM_CLAUDE:-0}" = "1" ] || [ "$(git config --get curso.revisaoClaude)" = "false" ]; then
+	echo "  (desligada)"
+elif [ -z "$CODIGO" ]; then
+	ok "sem código no commit — revisão do Claude não é necessária"
+elif ! command -v claude >/dev/null 2>&1; then
+	aviso "Claude Code não encontrado no PATH — pulei a revisão. (https://claude.com/claude-code)"
+elif [ $ERROS -gt 0 ]; then
+	aviso "corrija os erros acima primeiro; a revisão do Claude roda quando eles sumirem"
+else
+	echo "  ⏳ pedindo revisão ao Claude (~30–90 s)... pule com: CURSO_SEM_CLAUDE=1 git commit ..."
+	DIFF="$(printf '%s\n' "$CODIGO" | tr '\n' '\0' | xargs -0 git diff --cached --stat --patch -- | head -c 150000)"
+	PEDIDO="$(cat "$RAIZ/ferramentas/instrucoes-revisao.md")
+
+A seguir (na entrada padrão) está o diff das mudanças preparadas para o commit (git diff --cached).
+Você pode usar Read/Grep/Glob para ler o arquivo completo e entender o contexto, mas NÃO edite nada.
+Responda exatamente no formato pedido."
+	REVISAO_ARQ="$(git rev-parse --git-dir)/ultima-revisao.md"
+	printf '%s\n' "$DIFF" | claude -p "$PEDIDO" \
+		--allowedTools "Read,Grep,Glob" \
+		--disallowedTools "Edit,Write,NotebookEdit,Bash,WebFetch,WebSearch" \
+		> "$REVISAO_ARQ" 2>/dev/null
+	if [ $? -ne 0 ] || [ ! -s "$REVISAO_ARQ" ]; then
+		aviso "não consegui falar com o Claude (sem login/internet?). Commit segue sem essa revisão."
+	else
+		echo
+		sed 's/^/  │ /' "$REVISAO_ARQ"
+		echo
+		echo "  (salva em $REVISAO_ARQ — no Claude Code você pode pedir: \"explica a última revisão\")"
+		if tail -n 3 "$REVISAO_ARQ" | grep -q "RESULTADO: BLOQUEAR"; then
+			erro "o Claude encontrou problema bloqueante (🔴)"
+		fi
+	fi
+fi
+
+# -----------------------------------------------------------------------------
+echo
+if [ $ERROS -gt 0 ]; then
+	echo "${VERM}${NEG}✋ Commit bloqueado: $ERROS problema(s).${FIM} Corrija e rode o commit de novo."
+	echo "   (Se tiver certeza absoluta, pule com: git commit --no-verify)"
+	exit 1
+fi
+echo "${VERD}${NEG}✅ Tudo certo — commit liberado!${FIM}"
+exit 0

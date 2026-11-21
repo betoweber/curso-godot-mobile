@@ -64,8 +64,14 @@ func _on_area_entered(area: Area2D) -> void:
 
 
 ## Fica invencível por 1 segundo, piscando — usando um Tween.
+## O flash branco usa o shader shaders/flash.gdshader (lição 14).
 func _piscar() -> void:
 	_invencivel = true
+	var material_flash := visual.material as ShaderMaterial
+	if material_flash:
+		material_flash.set_shader_parameter("intensidade", 1.0)
+		create_tween().tween_method(
+			func(v: float): material_flash.set_shader_parameter("intensidade", v), 1.0, 0.0, 0.25)
 	var tween := create_tween().set_loops(5)
 	tween.tween_property(visual, "modulate:a", 0.2, 0.1)
 	tween.tween_property(visual, "modulate:a", 1.0, 0.1)

@@ -8,23 +8,32 @@ Início: ____/____/______
 ## Trilha Godot
 
 - [ ] 00 · Preparando o Mac
+  - [ ] `./ferramentas/configurar.sh` rodado no Mac
 - [ ] 01 · O editor, nós e cenas
 - [ ] 02 · GDScript básico
   - [ ] ex01 variáveis · [ ] ex02 condicionais · [ ] ex03 loops
   - [ ] ex04 arrays · [ ] ex05 dicionários · [ ] ex06 vetores
 - [ ] 03 · Scripts, ciclo de vida e sinais
   - [ ] ex07 classes · [ ] ex08 sinais · [ ] ex09 enum/match
+  - nível 2: [ ] ex10 lambdas · [ ] ex11 máquina de estados
 - [ ] 04 · Primeiro jogo 2D
 - [ ] 05 · Instâncias, timers e colisões
+  - [ ] ex15 cooldown
 - [ ] 06 · Sprites do Aseprite e animação
 - [ ] 07 · Interface
 - [ ] 08 · Mobile: telas, toque e desempenho
+  - [ ] ex13 gestos
 - [ ] 09 · Juice
 - [ ] 10 · Autoload, save e cenas
+  - [ ] ex14 save
 - [ ] 11 · Exportar para Android / iPhone
   - [ ] rodou no Android · [ ] rodou no iPhone
 - [ ] 12 · Introdução ao 3D
 - [ ] 13 · Projeto final
+  - [ ] ex12 grade (se for fazer puzzle)
+- [ ] 14 · Shaders (bônus)
+- [ ] 15 · Publicar nas lojas (bônus)
+  - [ ] publicado no itch.io
 
 ## Trilha Blender
 

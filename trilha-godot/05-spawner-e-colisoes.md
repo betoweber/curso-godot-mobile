@@ -118,6 +118,9 @@ $Spawner.wait_time = max(0.35, 0.9 - pontos * 0.01)
 3. **Desafio**: crie `VisibleOnScreenNotifier2D` no item e use o sinal `screen_exited` em vez de checar `position.y`.
    Qual abordagem você prefere e por quê?
 
+🧪 **Exercício automático ex15 (cooldown)**: uma classe de recarga — perfeita para um tiro da nave com intervalo
+mínimo. Faça e depois use no seu jogo (ex: tocar na tela atira, no máximo 3 tiros por segundo).
+
 ## ✅ Eu sei...
 
 - [ ] instanciar cenas com `preload` + `instantiate()` + `add_child()`

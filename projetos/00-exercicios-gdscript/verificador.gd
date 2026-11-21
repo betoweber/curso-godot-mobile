@@ -23,6 +23,15 @@ func verificar_tudo(pasta: String) -> Dictionary:
 	_ex08(pasta)
 	_ex09(pasta)
 
+	_bb.append("\n[font_size=20][b]— Nível 2 —[/b][/font_size]")
+	_txt.append("\n===== Nível 2 =====")
+	_ex10(pasta)
+	_ex11(pasta)
+	_ex12(pasta)
+	_ex13(pasta)
+	_ex14(pasta)
+	_ex15(pasta)
+
 	var total := _ok + _falhas
 	var resumo := "%d de %d testes passaram." % [_ok, total]
 	if _falhas == 0:
@@ -162,6 +171,111 @@ func _ex09(pasta: String) -> void:
 	_checar("animacao_para(Vector2(0,50), false) == \"fall\"", e.animacao_para(Vector2(0, 50), false), "fall")
 	_checar("formatar_tempo(125) == \"02:05\"", e.formatar_tempo(125), "02:05")
 	_checar("formatar_tempo(0) == \"00:00\"", e.formatar_tempo(0), "00:00")
+
+
+func _ex10(pasta: String) -> void:
+	var e = _abrir(pasta, "ex10_lambdas.gd", "10 · Lambdas e ordenação")
+	if e == null: return
+	var jogadores := [
+		{"nome": "Bia", "pontos": 30},
+		{"nome": "Ana", "pontos": 50},
+		{"nome": "Caio", "pontos": 30},
+		{"nome": "Davi", "pontos": 10},
+	]
+	var ranking: Array = e.ordenar_ranking(jogadores)
+	_checar("ordenar_ranking: ordem dos nomes == [Ana, Bia, Caio, Davi]",
+		ranking.map(func(j): return j.nome), ["Ana", "Bia", "Caio", "Davi"])
+	_checar("ordenar_ranking NÃO altera o array original (1º continua Bia)", jogadores[0].nome, "Bia")
+	_checar("nomes_acima_de(jogadores, 30) == [Bia, Ana, Caio]", e.nomes_acima_de(jogadores, 30), ["Bia", "Ana", "Caio"])
+	var triplo: Callable = e.criar_multiplicador(3)
+	_checar("criar_multiplicador(3).call(4) == 12", triplo.call(4), 12)
+	_checar("criar_multiplicador(-2).call(5) == -10", e.criar_multiplicador(-2).call(5), -10)
+
+
+func _ex11(pasta: String) -> void:
+	var e = _abrir(pasta, "ex11_maquina_estados.gd", "11 · Máquina de estados")
+	if e == null: return
+	var E = e.Estado
+	_checar("longe e patrulhando -> PATRULHANDO", e.proximo_estado(E.PATRULHANDO, 20.0, 100), E.PATRULHANDO)
+	_checar("viu o jogador (6 m) -> PERSEGUINDO", e.proximo_estado(E.PATRULHANDO, 6.0, 100), E.PERSEGUINDO)
+	_checar("colado no jogador (1 m) -> ATACANDO", e.proximo_estado(E.PERSEGUINDO, 1.0, 100), E.ATACANDO)
+	_checar("vida baixa (10) mesmo perto -> FUGINDO", e.proximo_estado(E.ATACANDO, 1.0, 10), E.FUGINDO)
+	_checar("histerese: perseguindo a 10 m continua PERSEGUINDO", e.proximo_estado(E.PERSEGUINDO, 10.0, 100), E.PERSEGUINDO)
+	_checar("patrulhando a 10 m continua PATRULHANDO", e.proximo_estado(E.PATRULHANDO, 10.0, 100), E.PATRULHANDO)
+	_checar("perseguindo a 15 m desiste -> PATRULHANDO", e.proximo_estado(E.PERSEGUINDO, 15.0, 100), E.PATRULHANDO)
+
+
+func _ex12(pasta: String) -> void:
+	var e = _abrir(pasta, "ex12_grade.gd", "12 · Grades 2D (match-3)")
+	if e == null: return
+	var g: Array = e.criar_grade(4, 3, 7)
+	_checar("criar_grade(4, 3, 7) tem 3 linhas", g.size(), 3)
+	_checar("criar_grade(4, 3, 7) linhas com 4 colunas", g[0].size() if g.size() > 0 else -1, 4)
+	if g.size() >= 2:
+		g[0][0] = 9
+	_checar("cada linha é um array independente (mudar g[0][0] não muda g[1][0])", g[1][0] if g.size() >= 2 else null, 7)
+	var grade := [
+		[1, 1, 1, 2, 2],
+		[3, 1, 0, 0, 0],
+		[4, 4, 4, 4, 5],
+	]
+	_checar("dentro_da_grade(grade, 4, 2) == true", e.dentro_da_grade(grade, 4, 2), true)
+	_checar("dentro_da_grade(grade, 5, 0) == false", e.dentro_da_grade(grade, 5, 0), false)
+	_checar("dentro_da_grade(grade, 0, -1) == false", e.dentro_da_grade(grade, 0, -1), false)
+	_checar("contar_vizinhos_iguais(grade, 1, 0) == 3", e.contar_vizinhos_iguais(grade, 1, 0), 3)
+	_checar("contar_vizinhos_iguais(grade, 0, 1) == 0", e.contar_vizinhos_iguais(grade, 0, 1), 0)
+	_checar("encontrar_trincas_horizontais (ignora a sequência de zeros)", e.encontrar_trincas_horizontais(grade), [
+		Vector2i(0, 0), Vector2i(1, 0), Vector2i(2, 0),
+		Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2), Vector2i(3, 2),
+	])
+
+
+func _ex13(pasta: String) -> void:
+	var e = _abrir(pasta, "ex13_gestos.gd", "13 · Gestos de toque")
+	if e == null: return
+	_checar("toque rápido parado -> \"toque\"", e.classificar_gesto(Vector2(100, 100), Vector2(105, 102), 0.1), "toque")
+	_checar("dedo parado por 0.8 s -> \"segurar\"", e.classificar_gesto(Vector2(100, 100), Vector2(101, 100), 0.8), "segurar")
+	_checar("arrastou para a direita -> \"swipe_direita\"", e.classificar_gesto(Vector2(100, 100), Vector2(300, 140), 0.2), "swipe_direita")
+	_checar("arrastou para a esquerda -> \"swipe_esquerda\"", e.classificar_gesto(Vector2(300, 100), Vector2(100, 80), 0.2), "swipe_esquerda")
+	_checar("arrastou para cima (Y diminui!) -> \"swipe_cima\"", e.classificar_gesto(Vector2(100, 500), Vector2(120, 200), 0.2), "swipe_cima")
+	_checar("arrastou para baixo -> \"swipe_baixo\"", e.classificar_gesto(Vector2(100, 200), Vector2(90, 500), 0.2), "swipe_baixo")
+	_checar("fator_pinca(100, 150) == 1.5", e.fator_pinca(100.0, 150.0), 1.5)
+	_checar("fator_pinca(0, 150) == 1.0 (sem dividir por zero)", e.fator_pinca(0.0, 150.0), 1.0)
+	_checar("aplicar_zoom(1.0, 1.5, 0.5, 3.0) == 1.5", e.aplicar_zoom(1.0, 1.5, 0.5, 3.0), 1.5)
+	_checar("aplicar_zoom(2.5, 2.0, 0.5, 3.0) == 3.0 (limite)", e.aplicar_zoom(2.5, 2.0, 0.5, 3.0), 3.0)
+
+
+func _ex14(pasta: String) -> void:
+	var e = _abrir(pasta, "ex14_save.gd", "14 · Save com JSON")
+	if e == null: return
+	var dados := {"recorde": 42, "moedas": 7, "skins": ["padrao", "dourada"]}
+	var texto: String = e.serializar(dados)
+	_checar("serializar não altera o dicionário original (sem \"versao\")", dados.has("versao"), false)
+	var volta: Dictionary = e.desserializar(texto)
+	_checar("ida e volta: recorde == 42 (int, não 42.0)", volta.get("recorde"), 42)
+	_checar("ida e volta: versao == 2", volta.get("versao"), 2)
+	_checar("ida e volta: skins preservadas", volta.get("skins"), ["padrao", "dourada"])
+	var corrompido: Dictionary = e.desserializar("{isso não é json")
+	_checar("texto inválido -> save padrão (moedas == 0)", corrompido.get("moedas"), 0)
+	_checar("\"[1,2]\" (não é dicionário) -> save padrão", e.desserializar("[1, 2]").get("skins"), ["padrao"])
+	var antigo: Dictionary = e.desserializar('{"versao": 1, "recorde": 10}')
+	_checar("save antigo sem \"moedas\" -> moedas == 0", antigo.get("moedas"), 0)
+	_checar("save antigo mantém o recorde == 10", antigo.get("recorde"), 10)
+
+
+func _ex15(pasta: String) -> void:
+	var script = _abrir_script(pasta, "ex15_cooldown.gd", "15 · Cooldown")
+	if script == null: return
+	var c = script.new(1.0)
+	_checar("começa pronto: pode_usar() == true", c.pode_usar(), true)
+	_checar("usar() == true na primeira vez", c.usar(), true)
+	_checar("usar() == false logo em seguida (recarregando)", c.usar(), false)
+	c.atualizar(0.25)
+	_checar("progresso() == 0.25 depois de 0.25 s", c.progresso(), 0.25)
+	c.atualizar(5.0)
+	_checar("restante nunca fica negativo", c.restante, 0.0)
+	_checar("pronto de novo: progresso() == 1.0", c.progresso(), 1.0)
+	_checar("usar() == true depois da recarga", c.usar(), true)
 
 
 # --- Utilidades ---------------------------------------------------------------
