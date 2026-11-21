@@ -4,7 +4,7 @@ Curso prático e pessoal para aprender **desenvolvimento de jogos mobile com God
 com Blender** — preparação para a disciplina de desenvolvimento de jogos da pós.
 
 - 📚 **16 lições de Godot** — do editor até shaders e publicação nas lojas, com foco em mobile
-- 🧪 **15 exercícios de GDScript com corretor automático** (109 testes, em 2 níveis, com gabarito)
+- 🧪 **15 exercícios de GDScript com corretor automático** (110 testes, em 2 níveis, com gabarito)
 - 🕹️ **2 jogos de referência completos e comentados**: um 2D mobile (toque) e um 3D (joystick virtual)
 - 🧊 **5 lições de Blender** — low poly, texturas pixel art com Aseprite, animação e exportação para o Godot
 - 🤖 **Tutor**: abra o Claude Code nesta pasta e tire dúvidas — ele conhece o curso (veja `CLAUDE.md`)
@@ -130,7 +130,7 @@ Depois, cada `git commit` passa por:
 | Arquivos proibidos | `.godot/`, keystores, senhas, `.apk/.aab/.ipa`, `.blend1`, arquivos > 50 MB | sim |
 | Arquivos `.uid` | avisa se o `.uid` de um script ficou de fora | não (aviso) |
 | Godot | carrega scripts, cenas, recursos e o `project.godot` dos projetos alterados (erros de sintaxe/tipo, referências quebradas, cena principal inexistente) | sim |
-| Exercícios | mostra "X de 109 testes passaram" | não |
+| Exercícios | mostra "X de 110 testes passaram" | não |
 | Claude | revisão de professor: 🔴 bugs, 🟡 sugestões, 🟢 elogios. Nos exercícios só dá dicas. Fica salva em `.git/ultima-revisao.md` | só por 🔴 |
 
 Os critérios da revisão ficam em [`ferramentas/instrucoes-revisao.md`](ferramentas/instrucoes-revisao.md) — edite à vontade.

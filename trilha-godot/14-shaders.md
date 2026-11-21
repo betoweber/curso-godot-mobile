@@ -117,6 +117,8 @@ void fragment() { ALBEDO = vec3(0.08, 0.05, 0.12); }
 `espessura` bem pequena, ou o recurso *Grow* do `StandardMaterial3D` (aba *Grow*) num next pass com *Cull Mode = Front*.
 Em formas arredondadas (personagens) funciona muito bem.
 
+📱 O contorno **desenha a malha duas vezes**. No celular, use em personagens e itens importantes — não em todo o cenário.
+
 ## Mais ideias (tente sozinho!)
 
 | Efeito | Pista |
