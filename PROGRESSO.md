@@ -3,12 +3,12 @@
 > Marque com `[x]` e faça commit. O tutor também pode atualizar isto para você.
 > Use as notas para registrar dúvidas, ideias e o que achou difícil — ajuda muito na revisão antes da pós.
 
-Início: ____/____/______
+Início: 23/11/2026
 
 ## Trilha Godot
 
-- [ ] 00 · Preparando o Mac
-  - [ ] `./ferramentas/configurar.sh` rodado no Mac
+- [x] 00 · Preparando o Mac
+  - [x] `./ferramentas/configurar.sh` rodado no Mac
 - [ ] 01 · O editor, nós e cenas
 - [ ] 02 · GDScript básico
   - [ ] ex01 variáveis · [ ] ex02 condicionais · [ ] ex03 loops
@@ -45,4 +45,6 @@ Início: ____/____/______
 
 ## Notas e dúvidas
 
-- 
+- Godot 4.7.2: o atalho de Scale Mode é `R` (não `S`); confira os tooltips da barra do viewport.
+- Remote (dock Scene) mostra o jogo rodando; Local mostra a cena do editor. Só há nós novos com o jogo em andamento.
+- Ordem de desenho: entre irmãos, o último da lista fica na frente; filho sempre fica na frente do pai.
