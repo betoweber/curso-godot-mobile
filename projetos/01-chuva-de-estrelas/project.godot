@@ -1,6 +1,10 @@
-; Projeto de referência da trilha Godot (lições 03 a 11).
-; Jogo mobile em modo retrato: arraste o dedo para mover a nave,
-; pegue estrelas e desvie dos meteoros.
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
@@ -17,8 +21,8 @@ Jogo="*res://scripts/jogo.gd"
 
 [display]
 
-window/size/viewport_width=720
-window/size/viewport_height=1280
+window/size/viewport_width=1080
+window/size/viewport_height=1920
 window/size/window_width_override=405
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
@@ -31,7 +35,7 @@ pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.05, 0.06, 0.13, 1)

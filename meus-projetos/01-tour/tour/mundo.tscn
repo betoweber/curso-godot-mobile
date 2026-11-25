@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bcxtfkocxqcs2"]
+
+[ext_resource type="Texture2D" uid="uid://dygg02jusbxw3" path="res://icon.svg" id="1_6ba58"]
+[ext_resource type="PackedScene" uid="uid://dqn1j03r4twml" path="res://icone.tscn" id="2_lgngo"]
+
+[node name="Mundo" type="Node2D" unique_id=1354799953]
+position = Vector2(1.1641532e-10, -1.1920929e-07)
+rotation = 0.0013477434
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1191506905]
+position = Vector2(544, 370)
+rotation = 0.007110238
+texture = ExtResource("1_6ba58")
+
+[node name="Sprite2D2" parent="." unique_id=1934282244 instance=ExtResource("2_lgngo")]
+position = Vector2(113.42713, 316.8474)
+scale = Vector2(-0.6507364, 3.5142121)
+
+[node name="Sprite2D4" parent="." unique_id=2025547828 instance=ExtResource("2_lgngo")]
+position = Vector2(371.21527, 159.49985)
+scale = Vector2(4.479722, 1.5591382)
+
+[node name="Sprite2D3" parent="." unique_id=129727736 instance=ExtResource("2_lgngo")]
+position = Vector2(504.31494, 233.32053)
+rotation = -1.0735666
+flip_h = true
+flip_v = true
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1524884474]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(1, 0, 1, 1)
+
+[node name="Label" type="Label" parent="." unique_id=1341558605]
+offset_right = 93.0
+offset_bottom = 23.0
+text = "Luis Alberto"

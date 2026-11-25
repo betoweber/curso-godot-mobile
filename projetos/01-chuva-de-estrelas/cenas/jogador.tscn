@@ -1,7 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dg87pie7xltiw"]
 
-[ext_resource type="Script" path="res://scripts/jogador.gd" id="1_jog"]
-[ext_resource type="Shader" path="res://shaders/flash.gdshader" id="2_flash"]
+[ext_resource type="Script" uid="uid://cucfimeggkds8" path="res://scripts/jogador.gd" id="1_jog"]
+[ext_resource type="Shader" uid="uid://bru8b47877t4n" path="res://shaders/flash.gdshader" id="2_flash"]
 
 [sub_resource type="ShaderMaterial" id="Mat_flash"]
 shader = ExtResource("2_flash")
@@ -11,14 +11,14 @@ shader_parameter/intensidade = 0.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_jog"]
 radius = 30.0
 
-[node name="Jogador" type="Area2D"]
+[node name="Jogador" type="Area2D" unique_id=18421705]
 position = Vector2(360, 1100)
 script = ExtResource("1_jog")
 
-[node name="Visual" type="Polygon2D" parent="."]
+[node name="Visual" type="Polygon2D" parent="." unique_id=616415802]
 material = SubResource("Mat_flash")
-color = Color(0.36, 0.84, 1, 1)
+color = Color(0.5724301, 0.61000663, 1, 1)
 polygon = PackedVector2Array(0, -48, 34, 34, 0, 18, -34, 34)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1472018792]
 shape = SubResource("CircleShape2D_jog")

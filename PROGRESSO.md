@@ -9,7 +9,7 @@ Início: 23/11/2026
 
 - [x] 00 · Preparando o Mac
   - [x] `./ferramentas/configurar.sh` rodado no Mac
-- [ ] 01 · O editor, nós e cenas
+- [x] 01 · O editor, nós e cenas
 - [ ] 02 · GDScript básico
   - [ ] ex01 variáveis · [ ] ex02 condicionais · [ ] ex03 loops
   - [ ] ex04 arrays · [ ] ex05 dicionários · [ ] ex06 vetores

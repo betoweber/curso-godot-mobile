@@ -1,14 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://sjyjlf10ks7v"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
-[ext_resource type="PackedScene" path="res://cenas/jogador.tscn" id="2_jog"]
+[ext_resource type="Script" uid="uid://byslm7vggwub3" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://dg87pie7xltiw" path="res://cenas/jogador.tscn" id="2_jog"]
 [ext_resource type="PackedScene" path="res://cenas/hud.tscn" id="3_hud"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=177124846]
 script = ExtResource("1_main")
 
-[node name="CeuEstrelado" type="CPUParticles2D" parent="."]
-position = Vector2(360, -20)
+[node name="CeuEstrelado" type="CPUParticles2D" parent="." unique_id=1815902603]
+position = Vector2(538, -20)
+scale = Vector2(1.4086431, 1.4086431)
 amount = 60
 lifetime = 8.0
 preprocess = 8.0
@@ -23,16 +24,16 @@ scale_amount_min = 1.5
 scale_amount_max = 4.0
 color = Color(1, 1, 1, 0.5)
 
-[node name="Itens" type="Node2D" parent="."]
+[node name="Itens" type="Node2D" parent="." unique_id=1984401595]
 
-[node name="Jogador" parent="." instance=ExtResource("2_jog")]
+[node name="Jogador" parent="." unique_id=173277821 instance=ExtResource("2_jog")]
 
-[node name="Spawner" type="Timer" parent="."]
+[node name="Spawner" type="Timer" parent="." unique_id=1970341673]
 wait_time = 0.9
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1932823059]
 anchor_mode = 0
 
-[node name="HUD" parent="." instance=ExtResource("3_hud")]
+[node name="HUD" parent="." unique_id=797876050 instance=ExtResource("3_hud")]
 
 [connection signal="timeout" from="Spawner" to="." method="_on_spawner_timeout"]
